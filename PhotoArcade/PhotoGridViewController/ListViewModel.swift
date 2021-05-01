@@ -55,6 +55,10 @@ protocol ListViewModelOutput: class {
     
     /// Update the collection view layout
     func updateCollectionViewLayout()
+    
+    /// Shows alert
+    /// - Parameter message: Shows alert in view
+    func showAlert(message: String)
 }
 
 protocol ListViewModelProtocol {
@@ -105,7 +109,8 @@ final class ListViewModel: ListViewModelProtocol, ListViewModelInput {
     /// :nodoc:
     func fetchPhotos() {
         guard PHPhotoLibrary.authorizationStatus() == .authorized else {
-          return
+            self.showPhotoAuthAlert()
+            return
         }
         let fetchOptions = PHFetchOptions()
         fetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
@@ -119,7 +124,6 @@ final class ListViewModel: ListViewModelProtocol, ListViewModelInput {
         }
         fetcher = ImageFetcher(size: allModel.count)
         dataSource.setDataSource(newData: allModel, keyList: allKeys)
-//        fetchBatchImage(allAssets: dataSource, indexToStart: 0, indexToEnd: dataSource.count - 1)
         output?.reloadCollection()
     }
     
@@ -217,20 +221,17 @@ final class ListViewModel: ListViewModelProtocol, ListViewModelInput {
         PHPhotoLibrary.requestAuthorization { [weak self] (status) in
             switch status {
             case .authorized:
-                print("Good to proceed")
                 self?.fetchPhotos()
-            case .denied, .restricted:
-                print("Not allowed")
-            case .notDetermined:
-                print("Not determined yet")
-            case .limited:
-                print("Limited")
-            @unknown default:
-                print("No")
+            default:
+                self?.showPhotoAuthAlert()
             }
         }
     }
-
+    
+    /// Shows alert to allow PhotoArcade to read all photos
+    private func showPhotoAuthAlert() {
+        self.output?.showAlert(message: "Please allow to read all photos, please go to setting to allow.")
+    }
     
     /// Fetches the thumbnail images and stores in fetcher. In a index range.
     /// - Parameters:

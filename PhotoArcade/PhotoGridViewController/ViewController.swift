@@ -39,7 +39,8 @@ final class ViewController: UIViewController {
     
     /// View model
     let viewModel: ListViewModelProtocol = ListViewModel(withData: PhotoDataSource())
-        
+    
+    // MARK: -
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
@@ -52,10 +53,11 @@ final class ViewController: UIViewController {
         performanceView.start()
     }
     
+    // MARK: -
     /// Configure cell
     func setupCell() {
         viewModel.dataSource.setUpCollectionViewCell = { [weak self] (model, indexPath) in
-            guard let cell = self?.collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? PhotoCell else {
+            guard let cell = self?.collectionView.dequeueReusableCell(withReuseIdentifier: "imageCell", for: indexPath) as? PhotoCell else {
                 fatalError()
             }
             cell.assetId = model?.asset.localIdentifier ?? ""
@@ -69,6 +71,7 @@ final class ViewController: UIViewController {
     }
 }
 
+// MARK: - UICollectionViewDelegateFlowLayout
 extension ViewController: UICollectionViewDelegateFlowLayout {
     
     /// :nodoc:
@@ -92,6 +95,7 @@ extension ViewController: UICollectionViewDelegateFlowLayout {
     }
 }
 
+// MARK: - UICollectionViewDataSourcePrefetching
 extension ViewController: UICollectionViewDataSourcePrefetching {
     
     /// :nodoc:
@@ -102,6 +106,7 @@ extension ViewController: UICollectionViewDataSourcePrefetching {
     }
 }
 
+// MARK: - UICollectionViewDelegate
 extension ViewController: UICollectionViewDelegate {
     
     /// :nodoc:
@@ -119,6 +124,7 @@ extension ViewController: UICollectionViewDelegate {
     }
 }
 
+// MARK: - ListViewModelOutput
 extension ViewController: ListViewModelOutput {
     
     /// :nodoc:
@@ -140,6 +146,18 @@ extension ViewController: ListViewModelOutput {
                     self?.collectionView.reloadItems(at: visibleIndex)
                 }
             }
+        }
+    }
+
+    /// :nodoc:
+    func showAlert(message: String) {
+        DispatchQueue.main.async { [weak self] in
+            let alertController = UIAlertController(title: "PhotoArcade", message: message, preferredStyle: .alert)
+            let okActionButton = UIAlertAction(title: "OK", style: .default) { (_) in
+                alertController.dismiss(animated: true, completion: nil)
+            }
+            alertController.addAction(okActionButton)
+            self?.show(alertController, sender: self)
         }
     }
 }

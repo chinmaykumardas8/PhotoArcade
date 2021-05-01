@@ -11,7 +11,7 @@ import UIKit
 
 final class ImageFetcher {
     private let manager = PHImageManager.default()
-    private let readWrite: ThreadSafeReaderWrite = .init(queueId: "com.fetchQueue.queue")
+    private let readWrite: ThreadSafeReaderWrite = .init(queueId: "com.PhotoArcade.fetchQueue")
     private var thumbnailImageCache: [String: UIImage] = [:]
     private var thumbnailRequests: [String: PHImageRequestID] = [:]
     
