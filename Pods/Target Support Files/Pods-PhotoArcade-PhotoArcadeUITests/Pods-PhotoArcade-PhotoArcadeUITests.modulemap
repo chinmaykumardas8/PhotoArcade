@@ -1,0 +1,6 @@
+framework module Pods_PhotoArcade_PhotoArcadeUITests {
+  umbrella header "Pods-PhotoArcade-PhotoArcadeUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}

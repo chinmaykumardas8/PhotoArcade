@@ -1,0 +1,16 @@
+PODS:
+  - GDPerformanceView-Swift (2.1.1)
+
+DEPENDENCIES:
+  - GDPerformanceView-Swift
+
+SPEC REPOS:
+  trunk:
+    - GDPerformanceView-Swift
+
+SPEC CHECKSUMS:
+  GDPerformanceView-Swift: 22d964fe40b19e3d914dba2586237d064de8fd77
+
+PODFILE CHECKSUM: e23e5aa81cfe13320e5f648170967b048d8ea8db
+
+COCOAPODS: 1.9.1
